@@ -1,0 +1,29 @@
+{
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2C5853759730262EAECE25C2A669EDB2499D661E" : 9223372036854775807,
+    "B006921972FF6E17BDC0BE362D939D3BEC6B6552" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "CFB51A09-FD91-4594-A3D3-FEAC30CC9461",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2C5853759730262EAECE25C2A669EDB2499D661E" : "Voices\/Carthage\/Checkouts\/PortalView\/",
+    "B006921972FF6E17BDC0BE362D939D3BEC6B6552" : "Voices\/Carthage\/Checkouts\/PortalApplication\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Voices",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Voices.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/guidomb\/PortalView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2C5853759730262EAECE25C2A669EDB2499D661E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/guidomb\/PortalApplication.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B006921972FF6E17BDC0BE362D939D3BEC6B6552"
+    }
+  ]
+}
