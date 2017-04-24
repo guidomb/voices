@@ -77,19 +77,50 @@ final class Voices: Application {
     }
     
     public func update(state: State, message: Message) -> (State, Command?)? {
-        return .none
+        return (State(), .none)
     }
     
     public func view(for state: State) -> View {
+        
+        let tweet = TweetView.RenderableTweet(
+            text: "This is an example #tweet for the demo app. It contains a hashtag and a URL http://guidomb.blog",
+            createdAt: Date(),
+            userName: "Guido Marucci Blas",
+            userSlug: "@guidomb",
+            userAvatar: UIImageContainer.loadImage(named: "avatar.jpg")!,
+            location: "Buenos Aires, Argentina"
+        )
+        
         return View(
             navigator: .main,
-            root: .simple,
-            component: container()
+            root: .stack(navigationBar(title: "Timeline")),
+            component: TweetView.view(for: tweet)
         )
     }
     
     public func subscriptions(for state: State) -> [ApplicationSubscription] {
         return []
+    }
+    
+}
+
+private extension Voices {
+    
+    func navigationBar(title: String) -> NavigationBar<Action> {
+        return PortalView.navigationBar(
+            properties: properties() {
+                $0.title = .text(title)
+                $0.onBack = .navigateToPreviousRoute(preformTransition: false)
+                $0.hideBackButtonTitle = true
+            },
+            style: navigationBarStyleSheet() { base, navBar in
+                navBar.titleTextColor = .white
+                navBar.isTranslucent = false
+                navBar.tintColor = .white
+                navBar.statusBarStyle = .lightContent
+                base.backgroundColor = .black
+            }
+        )
     }
     
 }
