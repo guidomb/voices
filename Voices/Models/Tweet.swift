@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ObjectID<Value>: Equatable, CustomStringConvertible, CustomDebugStringConvertible {
+struct ObjectID<Value>: Equatable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
     
     static func ==<Value>(lhs: ObjectID<Value>, rhs: ObjectID<Value>) -> Bool {
         return lhs.id == rhs.id
@@ -24,7 +24,11 @@ struct ObjectID<Value>: Equatable, CustomStringConvertible, CustomDebugStringCon
         return "\(Value.self)('\(id)')"
     }
     
-    init(id: String) {
+    var hashValue: Int {
+        return id.hash
+    }
+    
+    init(_ id: String) {
         self.id = id
     }
     
@@ -39,12 +43,17 @@ struct User {
     
 }
 
-struct Tweet {
+struct Tweet: CustomDebugStringConvertible {
+    
+    var debugDescription: String {
+        return text
+    }
     
     let id: ObjectID<Tweet>
     let text: String
     let createdAt: Date
     let createdBy: ObjectID<User>
-    let likedByMe: Bool
+    let liked: Bool
+    let place: String?
     
 }

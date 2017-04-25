@@ -17,12 +17,16 @@ final class Voices: Application {
     
     enum Command {
         
+        case fetchTimeline
+        
     }
     
     enum Message {
         
         case applicationLaunched
         case routeChanged(to: Route)
+        case timelineFetched(TwitterTimelineResponse)
+        case twitterOperationFailure(TwitterOperationError)
         
     }
     
@@ -60,12 +64,17 @@ final class Voices: Application {
         
     }
     
-    struct State {
+    enum State {
+        
+        case idle
+        case applicationStarted
+        case failed(TwitterOperationError)
+        case complete(tweets: [Tweet], users: [ObjectID<User> : User], avatars: [ObjectID<User> : Image])
         
     }
     
     public var initialState: State {
-        return State()
+        return .idle
     }
     
     public var initialRoute: Route {
@@ -77,25 +86,65 @@ final class Voices: Application {
     }
     
     public func update(state: State, message: Message) -> (State, Command?)? {
-        return (State(), .none)
+        switch (state, message) {
+        
+        case (.idle, .applicationLaunched):
+            return (.applicationStarted, .fetchTimeline)
+        
+        case (.applicationStarted, .timelineFetched(let result)):
+            return (.complete(tweets: result.tweets, users: result.users, avatars: [:]), .none)
+            
+        case (.applicationStarted, .twitterOperationFailure(let error)):
+            return (.failed(error), .none)
+            
+        default:
+            return .none
+        }
     }
     
     public func view(for state: State) -> View {
+        switch state {
+            
+        case .applicationStarted:
+            return View(
+                navigator: .main,
+                root: .stack(navigationBar(title: "Timeline")),
+                component: label(
+                    text: "Fetching timeline ...",
+                    style: labelStyleSheet() { base, label in
+                        label.textColor = .white
+                    }
+                )
+            )
+            
+        case .complete(let tweets, let users, let avatars):
+            return View(
+                navigator: .main,
+                root: .stack(navigationBar(title: "Timeline")),
+                component: TimelineView.view(for: tweets, users: users, avatars: avatars)
+            )
+            
+        case .failed(_):
+            return View(
+                navigator: .main,
+                root: .stack(navigationBar(title: "Timeline")),
+                alert: AlertProperties(
+                    title: "Operation error",
+                    text: "There was an error while fetching the timeline. Do you want to try again?",
+                    primary: AlertProperties<Action>.Button(title: "No"),
+                    secondary: AlertProperties<Action>.Button(title: "Yes")
+                )
+            )
+            
+        default:
+            return View(
+                navigator: .main,
+                root: .stack(navigationBar(title: "Timeline")),
+                component: container()
+            )
+        }
         
-        let tweet = TweetView.RenderableTweet(
-            text: "This is an example #tweet for the demo app. It contains a hashtag and a URL http://guidomb.blog",
-            createdAt: Date(),
-            userName: "Guido Marucci Blas",
-            userSlug: "@guidomb",
-            userAvatar: UIImageContainer.loadImage(named: "avatar.jpg")!,
-            location: "Buenos Aires, Argentina"
-        )
         
-        return View(
-            navigator: .main,
-            root: .stack(navigationBar(title: "Timeline")),
-            component: TweetView.view(for: tweet)
-        )
     }
     
     public func subscriptions(for state: State) -> [ApplicationSubscription] {
@@ -114,11 +163,11 @@ private extension Voices {
                 $0.hideBackButtonTitle = true
             },
             style: navigationBarStyleSheet() { base, navBar in
-                navBar.titleTextColor = .white
+                navBar.titleTextColor = .black
                 navBar.isTranslucent = false
-                navBar.tintColor = .white
-                navBar.statusBarStyle = .lightContent
-                base.backgroundColor = .black
+                navBar.tintColor = .black
+                navBar.statusBarStyle = .default
+                base.backgroundColor = .white
             }
         )
     }

@@ -8,11 +8,18 @@
 
 import UIKit
 import PortalApplication
+import PortalView
 
-PortalUIApplication.start(
+let context = UIKitApplicationContext(
     application: Voices(),
     commandExecutor: VoicesCommandExecutor(),
-    subscriptionManager: VoicesSubscriptionManager()) { message in
+    subscriptionManager: VoicesSubscriptionManager(),
+    customComponentRenderer: VoidCustomComponentRenderer()
+)
+
+context.registerMiddleware(TimeLogger())
+
+PortalUIApplication.start(applicationContext: context) { message in
         switch message {
         case .didFinishLaunching(_, _):
             return .applicationLaunched

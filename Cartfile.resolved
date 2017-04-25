@@ -1,3 +1,5 @@
-github "guidomb/PortalApplication" "f67ebb536670650cdc46cdb724483efba321e5db"
-github "guidomb/PortalView" "14b975fd9ec6da29e5a700746a337dd4dd0a7874"
+github "ReactiveCocoa/ReactiveSwift" "1.1.1"
+github "antitypical/Result" "3.2.1"
+github "guidomb/PortalApplication" "8c9721088b090a5d7ceffcb4410ccf2ead8f971f"
+github "guidomb/PortalView" "dfcf8efe178876c64945ceba6d8b98e0418ed316"
 github "guidomb/yoga" "8d2c33a8e951510486353bbaedbbf389345bd1d1"

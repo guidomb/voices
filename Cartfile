@@ -1,1 +1,2 @@
 github "guidomb/PortalApplication" "master"
+github "ReactiveCocoa/ReactiveSwift" ~> 1.1.1

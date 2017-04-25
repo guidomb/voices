@@ -15,19 +15,20 @@ struct TweetView {
         
         let text: String
         let createdAt: Date
+        let place: String?
         let userName: String
         let userSlug: String
         let userAvatar: Image
-        let location: String?
         
     }
     
-    static let maxHeigth: UInt = 150
-    static let avatarSize: UInt = 50
-    static let padding: UInt = 5
-    static let contentPadding: UInt = 5
-    static let headerHeight: UInt = 20
-    static let contentMaxWidth = UInt(UIScreen.main.bounds.size.width) - avatarSize - contentPadding
+    static let maxHeigth: UInt = 300
+    
+    fileprivate static let avatarSize: UInt = 50
+    fileprivate static let padding: UInt = 5
+    fileprivate static let contentPadding: UInt = 5
+    fileprivate static let headerHeight: UInt = 20
+    fileprivate static let contentMaxWidth = UInt(UIScreen.main.bounds.size.width) - avatarSize - contentPadding
     
     static func view(for tweet: RenderableTweet) -> Component<Voices.Action> {
         return container(
@@ -36,7 +37,7 @@ struct TweetView {
                 content(for: tweet)
             ],
             style: styleSheet() {
-                $0.backgroundColor = .gray
+                $0.backgroundColor = .black
             },
             layout: layout() {
                 $0.flex = flex() {
@@ -63,9 +64,7 @@ struct TweetView {
                     }
                 )
             ],
-            style: styleSheet() {
-                $0.backgroundColor = .blue
-            },
+            style: styleSheet(),
             layout: layout() {
                 $0.flex = flex() {
                     $0.grow = .one
@@ -87,9 +86,9 @@ struct TweetView {
                 }
             )
         ]
-        if let location = tweet.location {
+        if let place = tweet.place {
             body.append(label(
-                text: location,
+                text: place,
                 style: labelStyleSheet() { base, label in
                     label.textColor = .white
                     label.adjustToFitWidth = true
@@ -102,14 +101,12 @@ struct TweetView {
             children: [
                 header(
                     userName: tweet.userName,
-                    userSlug: tweet.userSlug,
+                    userSlug: "@\(tweet.userSlug)",
                     createdAt: "1m"
                 ),
                 container(
                     children: body,
-                    style: styleSheet() {
-                        $0.backgroundColor = .green
-                    },
+                    style: styleSheet(),
                     layout: layout() {
                         $0.flex = flex() {
                             $0.grow = .one
@@ -118,11 +115,8 @@ struct TweetView {
                     }
                 )
             ],
-            style: styleSheet() {
-                $0.backgroundColor = .red
-            },
+            style: styleSheet(),
             layout: layout() {
-                print(contentMaxWidth)
                 $0.width = dimension() {
                     // Max width must be set becuase UIKit needs a fixed width in order to decide
                     // if text's size needs to be adjusted or moved to a next line.
