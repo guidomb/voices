@@ -9,10 +9,16 @@
 import PortalApplication
 import Social
 import Accounts
+import PortalView
 
 final class VoicesCommandExecutor: CommandExecutor {
     
-    let twitterService = TwitterService()
+    private let twitterService = TwitterService()
+    private let session: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        return URLSession(configuration: configuration)
+    }()
     
     public func execute(command: Voices.Command, dispatch: @escaping (Voices.Action) -> Void) {
         switch command {
@@ -27,6 +33,24 @@ final class VoicesCommandExecutor: CommandExecutor {
                 }
             }
             
+        case .fetchUsersAvatar(let avatarsByUserId):
+            for (userId, avatarURL) in avatarsByUserId {
+                let request = URLRequest(url: avatarURL)
+                session.reactive.data(with: request).startWithResult { result in
+                    switch result {
+                    case .success(let data, _):
+                        if let image = UIImage(data: data) {
+                            let avatar = UIImageContainer(image: image)
+                            dispatch(.sendMessage(.userAvatarFetched(userId: userId, avatar: avatar)))
+                        } else {
+                            print("VoicesCommandExecutor - Invalid image format for avatar '\(avatarURL.absoluteString)' for user '\(userId)'")
+                        }
+                        
+                    case .failure(_):
+                        print("VoicesCommandExecutor - Error fetching avatar '\(avatarURL.absoluteString)' for user '\(userId)'")
+                    }
+                }
+            }
         }
     }
 

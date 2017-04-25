@@ -11,24 +11,15 @@ import PortalView
 
 struct TimelineView {
     
-    static let defaultAvatar = UIImageContainer.loadImage(named: "default_avatar.png")!
-    
-    static func view(for tweets: [Tweet], users: [ObjectID<User> : User], avatars: [ObjectID<User> : Image]) -> Component<Voices.Action> {
+    static func view(tweets: [Tweet], users: [ObjectID<User> : User], avatars: [ObjectID<User> : Image]) -> Component<Voices.Action> {
         var items: [TableItemProperties<Voices.Action>] = []
         items.reserveCapacity(tweets.count)
         
         for tweet in tweets {
             guard let user = users[tweet.createdBy] else { continue }
             
-            let renderableTweet = TweetView.RenderableTweet(
-                text: tweet.text,
-                createdAt: tweet.createdAt,
-                place: tweet.place,
-                userName: user.name,
-                userSlug: user.slug,
-                userAvatar: avatars[user.id] ?? TimelineView.defaultAvatar
-            )
-            let item = tableItem(height: TweetView.maxHeigth) { _ in
+            let renderableTweet = TweetView.RenderableTweet.forTweet(tweet, user: user, avatar: avatars[user.id])
+            let item = tableItem(height: TweetView.maxHeigth, onTap: .navigate(to: .detail(tweet.id))) { _ in
                 TableItemRender<Voices.Action>(
                     component: TweetView.view(for: renderableTweet),
                     typeIdentifier: "TimelineTweet"

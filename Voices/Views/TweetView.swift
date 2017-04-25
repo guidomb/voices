@@ -11,7 +11,19 @@ import UIKit
 
 struct TweetView {
     
+    
     struct RenderableTweet {
+        
+        static func forTweet(_ tweet: Tweet, user: User, avatar: Image? = .none) -> RenderableTweet {
+            return RenderableTweet(
+                text: tweet.text,
+                createdAt: tweet.createdAt,
+                place: tweet.place,
+                userName: user.name,
+                userSlug: user.slug,
+                userAvatar: avatar ?? TweetView.defaultAvatar
+            )
+        }
         
         let text: String
         let createdAt: Date
@@ -24,6 +36,7 @@ struct TweetView {
     
     static let maxHeigth: UInt = 300
     
+    fileprivate static let defaultAvatar = UIImageContainer.loadImage(named: "default_avatar.png")!
     fileprivate static let avatarSize: UInt = 50
     fileprivate static let padding: UInt = 5
     fileprivate static let contentPadding: UInt = 5
