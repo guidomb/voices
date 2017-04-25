@@ -34,7 +34,7 @@ struct TweetView {
         
     }
     
-    static let maxHeigth: UInt = 300
+    static let maxHeigth: UInt = 200
     
     fileprivate static let defaultAvatar = UIImageContainer.loadImage(named: "default_avatar.png")!
     fileprivate static let avatarSize: UInt = 50
