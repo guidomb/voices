@@ -18,12 +18,19 @@ struct TimelineView {
         for tweet in tweets {
             guard let user = users[tweet.createdBy] else { continue }
             
-            let renderableTweet = TweetView.RenderableTweet.forTweet(tweet, user: user, avatar: avatars[user.id])
-            let item = tableItem(height: TweetView.maxHeigth, onTap: .navigate(to: .detail(tweet.id))) { _ in
-                TableItemRender<Voices.Action>(
-                    component: TweetView.view(for: renderableTweet),
-                    typeIdentifier: "TimelineTweet"
-                )
+            let item: TableItemProperties<Voices.Action> = tableItem(
+                height: TweetView.maxHeight,
+                onTap: .navigate(to: .detail(tweet.id))) { (maxHeight: UInt) in
+                    let renderableTweet = TweetView.RenderableTweet.from(
+                        tweet: tweet,
+                        user: user,
+                        avatar: avatars[user.id],
+                        maxHeight: maxHeight
+                    )
+                    return TableItemRender<Voices.Action>(
+                        component: TweetView.view(for: renderableTweet),
+                        typeIdentifier: "TimelineTweet"
+                    )
             }
             items.append(item)
         }

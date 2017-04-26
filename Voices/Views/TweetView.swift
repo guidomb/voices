@@ -14,14 +14,15 @@ struct TweetView {
     
     struct RenderableTweet {
         
-        static func forTweet(_ tweet: Tweet, user: User, avatar: Image? = .none) -> RenderableTweet {
+        static func from(tweet: Tweet, user: User, avatar: Image? = .none, maxHeight: UInt) -> RenderableTweet {
             return RenderableTweet(
                 text: tweet.text,
                 createdAt: tweet.createdAt,
                 place: tweet.place,
                 userName: user.name,
                 userSlug: user.slug,
-                userAvatar: avatar ?? TweetView.defaultAvatar
+                userAvatar: avatar ?? TweetView.defaultAvatar,
+                maxHeight: maxHeight
             )
         }
         
@@ -31,10 +32,11 @@ struct TweetView {
         let userName: String
         let userSlug: String
         let userAvatar: Image
+        let maxHeight: UInt
         
     }
     
-    static let maxHeigth: UInt = 200
+    static let maxHeight: UInt = 200
     
     fileprivate static let defaultAvatar = UIImageContainer.loadImage(named: "default_avatar.png")!
     fileprivate static let avatarSize: UInt = 50
@@ -56,11 +58,11 @@ struct TweetView {
             layout: layout() {
                 $0.flex = flex() {
                     $0.direction = .row
-                    $0.grow = .one
+                    $0.grow = .zero
                 }
                 $0.padding = .all(value: padding)
                 $0.height = dimension() {
-                    $0.maximum = maxHeigth
+                    $0.maximum = tweet.maxHeight
                 }
             }
         )

@@ -183,7 +183,12 @@ final class Voices: Application {
                     let user = completeState.users[tweet.createdBy] {
                     
                     let avatar = completeState.avatars[user.id]
-                    let renderableTweet = TweetView.RenderableTweet.forTweet(tweet, user: user, avatar: avatar)
+                    let renderableTweet = TweetView.RenderableTweet.from(
+                        tweet:tweet,
+                        user: user,
+                        avatar: avatar,
+                        maxHeight: TweetView.maxHeight
+                    )
                     return View(
                         navigator: .main,
                         root: .stack(navigationBar(title: "Tweet")),
