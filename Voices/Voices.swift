@@ -187,7 +187,19 @@ final class Voices: Application {
                     return View(
                         navigator: .main,
                         root: .stack(navigationBar(title: "Tweet")),
-                        component: TweetView.view(for: renderableTweet)
+                        component: container(
+                            children: [
+                                TweetView.view(for: renderableTweet)
+                            ],
+                            style: styleSheet() {
+                                $0.backgroundColor = .white
+                            },
+                            layout: layout() {
+                                $0.flex = flex() {
+                                    $0.grow = .one
+                                }
+                            }
+                        )
                     )
                 } else {
                     return View(
