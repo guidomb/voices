@@ -43,8 +43,6 @@ struct TweetView {
     fileprivate static let padding: UInt = 5
     fileprivate static let contentPadding: UInt = 5
     fileprivate static let headerHeight: UInt = 20
-    fileprivate static let screenWidth = UInt(UIScreen.main.bounds.size.width)
-    fileprivate static let contentMaxWidth = screenWidth - avatarSize - contentPadding
     
     static func view(for tweet: RenderableTweet) -> Component<Voices.Action> {
         return container(
