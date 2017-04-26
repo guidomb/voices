@@ -41,7 +41,8 @@ struct TweetView {
     fileprivate static let padding: UInt = 5
     fileprivate static let contentPadding: UInt = 5
     fileprivate static let headerHeight: UInt = 20
-    fileprivate static let contentMaxWidth = UInt(UIScreen.main.bounds.size.width) - avatarSize - contentPadding
+    fileprivate static let screenWidth = UInt(UIScreen.main.bounds.size.width)
+    fileprivate static let contentMaxWidth = screenWidth - avatarSize - contentPadding
     
     static func view(for tweet: RenderableTweet) -> Component<Voices.Action> {
         return container(
@@ -130,16 +131,12 @@ struct TweetView {
             ],
             style: styleSheet(),
             layout: layout() {
-                $0.width = dimension() {
-                    // Max width must be set becuase UIKit needs a fixed width in order to decide
-                    // if text's size needs to be adjusted or moved to a next line.
-                    $0.maximum = contentMaxWidth
-                }
                 $0.padding = .by(edge: edge() {
                     $0.left = contentPadding
                 })
                 $0.flex = flex() {
                     $0.grow = .two
+                    $0.shrink = .one
                 }
             }
         )
